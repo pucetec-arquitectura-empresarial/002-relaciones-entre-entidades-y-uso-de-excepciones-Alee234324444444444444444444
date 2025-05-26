@@ -4,6 +4,7 @@ import com.pucetec.reservations.exceptions.ProfessorNotFoundException
 import com.pucetec.reservations.exceptions.StudentAlreadyEnrolledException
 import com.pucetec.reservations.exceptions.StudentNotFoundException
 import com.pucetec.reservations.exceptions.SubjectNotFoundException
+import com.pucetec.reservations.exceptions.SubjectNotFoundExceptionDelete
 import com.pucetec.reservations.mappers.SubjectMapper
 import com.pucetec.reservations.models.entities.Subject
 import com.pucetec.reservations.models.requests.SubjectRequest
@@ -56,6 +57,13 @@ class SubjectService(
         val updatedSubject = subjectRepository.save(subject)
         return subjectMapper.toResponse(updatedSubject)
     }
+
+    fun deleteSubject(subjectId: Long) {
+        val subject = subjectRepository.findById(subjectId)
+            .orElseThrow { SubjectNotFoundExceptionDelete("Subject with ID $subjectId not found.") }
+        subjectRepository.delete(subject)
+    }
+
 
     fun listSubjects(): List<SubjectResponse> =
         subjectMapper.toResponseList(subjectRepository.findAll())
