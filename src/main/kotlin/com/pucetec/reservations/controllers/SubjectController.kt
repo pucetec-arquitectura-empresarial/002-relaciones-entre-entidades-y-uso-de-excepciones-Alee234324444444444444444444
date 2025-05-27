@@ -35,6 +35,10 @@ class SubjectController(
         return ResponseEntity.noContent().build()
     }
 
+    @GetMapping("/{subjectId}")
+    fun getSubjectById(@PathVariable subjectId: Long): SubjectResponse =
+        subjectService.getSubjectById(subjectId)
+
     @GetMapping
     fun listSubjects(): List<SubjectResponse> = subjectService.listSubjects()
 }

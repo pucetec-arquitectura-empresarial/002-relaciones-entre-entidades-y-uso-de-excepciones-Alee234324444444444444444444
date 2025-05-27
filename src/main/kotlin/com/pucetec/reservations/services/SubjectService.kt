@@ -58,13 +58,28 @@ class SubjectService(
         return subjectMapper.toResponse(updatedSubject)
     }
 
+
+
     fun deleteSubject(subjectId: Long) {
         val subject = subjectRepository.findById(subjectId)
             .orElseThrow { SubjectNotFoundExceptionDelete("Subject with ID $subjectId not found.") }
         subjectRepository.delete(subject)
+
     }
+
+    fun getSubjectById(subjectId: Long): SubjectResponse {
+        // Step 1: Find the subject by ID
+        val subject = subjectRepository.findById(subjectId)
+            .orElseThrow { SubjectNotFoundException("No se encontró la materia con ID: $subjectId") }
+
+        // Step 2: Return the subject response
+        return subjectMapper.toResponse(subject)
+    }
+
 
 
     fun listSubjects(): List<SubjectResponse> =
         subjectMapper.toResponseList(subjectRepository.findAll())
+
+
 }
