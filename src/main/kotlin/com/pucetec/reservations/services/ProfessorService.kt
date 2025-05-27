@@ -1,5 +1,6 @@
 package com.pucetec.reservations.services
 
+import com.pucetec.reservations.exceptions.ProfessorAlreadyExistsException
 import com.pucetec.reservations.mappers.ProfessorMapper
 import com.pucetec.reservations.models.entities.Professor
 import com.pucetec.reservations.models.responses.ProfessorResponse
@@ -17,7 +18,7 @@ class ProfessorService(
             val savedProfessor = professorRepository.save(professor)
             return professorMapper.toResponse(savedProfessor)
         }
-        return professorMapper.toResponse(existingProfessor)
+        throw ProfessorAlreadyExistsException("Professor with name ${professor.name} already exists")
     }
 
     fun listProfessors(): List<ProfessorResponse> {

@@ -4,6 +4,8 @@ import com.pucetec.reservations.constants.Routes
 import com.pucetec.reservations.models.requests.SubjectRequest
 import com.pucetec.reservations.models.responses.SubjectResponse
 import com.pucetec.reservations.services.SubjectService
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -26,6 +28,16 @@ class SubjectController(
         @PathVariable subjectId: Long,
         @PathVariable studentId: Long
     ): SubjectResponse = subjectService.enrollStudent(subjectId, studentId)
+
+    @DeleteMapping("/{subjectId}")
+    fun deleteSubject(@PathVariable subjectId: Long): ResponseEntity<Void> {
+        subjectService.deleteSubject(subjectId)
+        return ResponseEntity.noContent().build()
+    }
+
+    @GetMapping("/{subjectId}")
+    fun getSubjectById(@PathVariable subjectId: Long): SubjectResponse =
+        subjectService.getSubjectById(subjectId)
 
     @GetMapping
     fun listSubjects(): List<SubjectResponse> = subjectService.listSubjects()
